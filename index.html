@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Yska Portfolio</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=JetBrains+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&display=swap">
+<style>
+html{background:#0c0b10}
+/* Layout concept: a dark production board. Slanted cuts (about 12 degrees) echo the diagonals inside the artwork;
+   each piece keeps its own accent colour, which only appears on hover and in the viewer. */
+:root{
+  --bg:#0c0b10; --bg2:#13111a; --panel:#17141f; --line:#2b2738;
+  --fg:#ece8f2; --mute:#a29bb4; --crimson:#e0314b; --violet:#8b5cf6;
+  --display:'Big Shoulders Display','Arial Narrow',Impact,sans-serif;
+  --body:'Manrope',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 16px/1.65 var(--body);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:60}
+img{display:block;max-width:100%}
+a{color:inherit}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--crimson);outline-offset:3px}
+.wrap{width:100%;max-width:1240px;margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.mono{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+
+/* header */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(12,11,16,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:24px;height:60px}
+.brand{font:900 30px/1 var(--display);letter-spacing:.04em;text-decoration:none}
+.brand i{color:var(--crimson);font-style:normal;margin-left:2px}
+.nav{display:flex;gap:26px;margin-left:auto}
+.nav a{font:500 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;text-decoration:none;color:var(--mute);padding:8px 0;border-bottom:2px solid transparent}
+.nav a:hover{color:var(--fg);border-color:var(--crimson)}
+.lang{display:flex;margin-left:auto}
+.nav + .lang{margin-left:8px}
+.lang button{background:none;border:1px solid var(--line);padding:6px 10px;font:500 12px/1 var(--mono);letter-spacing:.08em;color:var(--mute)}
+.lang button+button{border-left:0}
+.lang button[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+
+/* hero */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:40px;align-items:center;padding-block:56px 72px}
+.hero-copy{min-width:0}
+.eyebrow{color:var(--crimson);margin:0 0 14px}
+.name{position:relative;isolation:isolate;margin:0;font:900 clamp(96px,17vw,224px)/.8 var(--display);letter-spacing:-.005em;display:inline-block}
+.name::after{content:"";position:absolute;left:-3%;right:18%;bottom:.02em;height:.17em;background:var(--crimson);transform:skewX(-20deg);z-index:-1}
+.role{margin:26px 0 0;font:700 clamp(20px,2.4vw,28px)/1.15 var(--display);letter-spacing:.06em;text-transform:uppercase}
+.lede{margin:14px 0 0;max-width:46ch;color:var(--mute);font-size:17px}
+.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.btn{display:inline-block;text-decoration:none;font:700 14px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:16px 28px;clip-path:polygon(12px 0,100% 0,calc(100% - 12px) 100%,0 100%);border:0}
+.btn-primary{background:var(--crimson);color:#fff}
+.btn-primary:hover{background:#f04560}
+.btn-ghost{background:var(--panel);color:var(--fg)}
+.btn-ghost:hover{background:var(--line)}
+.toolrow{display:flex;flex-wrap:wrap;gap:6px 18px;list-style:none;margin:28px 0 0;padding:0;color:var(--mute)}
+.toolrow li::before{content:"/";color:var(--crimson);margin-right:8px}
+.hero-art{--k:clamp(22px,4vw,54px);display:flex;height:clamp(300px,44vw,580px);min-width:0}
+.slab{--acc:#fff;position:relative;flex:1 1 0;min-width:0;padding:0;border:0;background:var(--panel);margin-left:calc(var(--k) * -1 + 6px);clip-path:polygon(var(--k) 0,100% 0,calc(100% - var(--k)) 100%,0 100%);overflow:hidden;animation:rise .7s cubic-bezier(.2,.7,.2,1) backwards}
+.slab:first-child{margin-left:0}
+.slab:nth-child(2){animation-delay:.08s}.slab:nth-child(3){animation-delay:.16s}
+.slab img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.slab:hover img,.slab:focus-visible img{transform:scale(1.05)}
+.slab::after{content:"";position:absolute;left:0;right:0;bottom:0;height:5px;background:var(--acc);transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.slab:hover::after,.slab:focus-visible::after{transform:scaleX(1)}
+@keyframes rise{from{transform:translateY(28px);opacity:0}}
+
+/* section heads */
+.sec{padding-block:72px}
+.sec-alt{background:var(--bg2);clip-path:polygon(0 28px,100% 0,100% calc(100% - 28px),0 100%);padding-block:104px}
+.head{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 28px;margin-bottom:12px}
+.h2{margin:0;font:900 clamp(56px,9vw,104px)/.9 var(--display);letter-spacing:.005em;text-transform:uppercase;text-wrap:balance}
+.h2::after{content:"";display:block;width:90px;height:8px;margin-top:14px;background:var(--crimson);transform:skewX(-20deg)}
+.count{color:var(--mute)}
+.sub{margin:18px 0 0;max-width:62ch;color:var(--mute)}
+
+/* filters */
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:28px 0 28px}
+.chip{background:var(--panel);border:0;padding:12px 24px;font:500 12px/1 var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--mute);clip-path:polygon(10px 0,100% 0,calc(100% - 10px) 100%,0 100%)}
+.chip:hover{color:var(--fg);background:var(--line)}
+.chip[aria-pressed="true"]{background:var(--crimson);color:#fff}
+.chip b{font-weight:500;opacity:.7;margin-left:6px}
+
+/* masonry */
+.grid{display:grid;grid-template-columns:repeat(var(--n,3),minmax(0,1fr));gap:var(--gap,16px);align-items:start}
+.col{display:flex;flex-direction:column;gap:var(--gap,16px);min-width:0}
+.tile{--acc:#fff;position:relative;display:block;width:100%;padding:0;border:0;background:var(--panel);overflow:hidden;text-align:left;clip-path:polygon(0 0,calc(100% - 24px) 0,100% 24px,100% 100%,0 100%);animation:pop .45s ease backwards}
+.tile img{width:100%;height:auto;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+.tile:hover img,.tile:focus-visible img{transform:scale(1.04)}
+.tile::after{content:"";position:absolute;left:0;right:0;bottom:0;height:4px;background:var(--acc);transform:scaleX(0);transform-origin:left;transition:transform .35s}
+.tile:hover::after,.tile:focus-visible::after{transform:scaleX(1)}
+.tile:focus-visible{outline-offset:-4px}
+.cap{position:absolute;inset:auto 0 0 0;padding:44px 16px 18px;background:linear-gradient(to top,rgba(8,7,12,.92),rgba(8,7,12,0));opacity:0;transform:translateY(8px);transition:opacity .25s,transform .25s;pointer-events:none}
+.tile:hover .cap,.tile:focus-visible .cap{opacity:1;transform:none}
+.cap b{display:block;font:800 24px/1 var(--display);letter-spacing:.04em;text-transform:uppercase}
+.cap i{display:block;margin-top:6px;font:400 11px/1.2 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mute);font-style:normal}
+@media (hover:none){.cap{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:translateY(14px)}}
+
+/* production */
+.feats{display:flex;flex-direction:column;gap:72px;margin-top:56px}
+.feat{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:48px;align-items:center}
+.feat:nth-child(even){grid-template-columns:minmax(0,1fr) minmax(0,1.15fr)}
+.feat:nth-child(even) .feat-img{order:2}
+.feat-img{--acc:#fff}
+.feat-img .tile{cursor:zoom-in}
+.feat-img .cap{opacity:1;transform:none}
+.feat-txt{min-width:0}
+.feat-txt .mono{color:var(--crimson);margin:0}
+.feat-txt h3{margin:10px 0 0;font:800 clamp(34px,4.4vw,52px)/1 var(--display);text-transform:uppercase;letter-spacing:.015em;text-wrap:balance}
+.feat-txt ul{list-style:none;margin:20px 0 0;padding:0;display:flex;flex-direction:column;gap:12px;max-width:52ch}
+.feat-txt li{position:relative;padding-left:26px;color:var(--mute)}
+.feat-txt li::before{content:"";position:absolute;left:0;top:.62em;width:14px;height:3px;background:var(--crimson);transform:skewX(-30deg)}
+.feat-txt .btn{margin-top:26px}
+
+/* about */
+.about{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:56px;margin-top:36px}
+.about p{margin:0 0 16px;font-size:19px;max-width:56ch}
+.about p:last-child{color:var(--mute);font-size:17px}
+.facts{margin:0;display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.fact{display:grid;grid-template-columns:120px minmax(0,1fr);gap:16px;padding:18px 0;border-bottom:1px solid var(--line)}
+.fact dt{color:var(--crimson);padding-top:3px}
+.fact dd{margin:0}
+
+/* games */
+.games{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin-top:40px}
+.game{background:var(--panel);padding:30px 28px 32px;clip-path:polygon(0 0,calc(100% - 28px) 0,100% 28px,100% 100%,0 100%);display:flex;flex-direction:column;gap:14px;min-width:0}
+.game h3{margin:0;font:800 34px/1 var(--display);text-transform:uppercase;letter-spacing:.02em;overflow-wrap:anywhere}
+.game p{margin:0;color:var(--mute);font-size:15px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;list-style:none;margin:auto 0 0;padding:16px 0 0}
+.tags li{font:500 11px/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;padding:7px 10px;background:var(--bg);color:var(--fg)}
+
+/* contact */
+.contact{padding-block:88px 56px;text-align:left}
+.contact .h2{font-size:clamp(64px,13vw,168px)}
+.mail{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin:26px 0 0;font-size:14px;text-transform:none;letter-spacing:.04em}
+.mail a{text-decoration:none;border-bottom:1px solid var(--crimson)}
+.copy{background:var(--panel);border:0;padding:8px 14px;font:500 11px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.copy:hover{color:var(--fg);background:var(--line)}
+.foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;margin-top:72px;padding-top:20px;border-top:1px solid var(--line);color:var(--mute)}
+
+/* viewer */
+.viewer{position:fixed;inset:0;z-index:100;display:grid;grid-template-columns:64px minmax(0,1fr) 340px 64px;grid-template-rows:minmax(0,1fr);background:rgba(8,7,12,.97);animation:fade .25s ease}
+.viewer[hidden]{display:none}
+.viewer::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(60% 70% at 38% 45%,color-mix(in srgb,var(--acc,#888) 26%,transparent),transparent 70%)}
+.v-stage{position:relative;margin:0;padding:28px 0;display:flex;align-items:center;justify-content:center;min-height:0;min-width:0;grid-column:2}
+.v-stage img{max-height:100%;max-width:100%;width:auto;height:auto;object-fit:contain;animation:fade .3s ease}
+.v-panel{position:relative;grid-column:3;align-self:center;padding:28px 12px 28px 24px;min-width:0}
+.v-panel .mono{color:var(--mute);margin:0}
+.v-panel h3{margin:10px 0 0;font:900 clamp(36px,4vw,52px)/.95 var(--display);text-transform:uppercase;letter-spacing:.01em;text-wrap:balance}
+.v-bar{width:72px;height:6px;margin:18px 0;background:var(--acc,var(--crimson));transform:skewX(-20deg)}
+.v-panel p{margin:0;color:var(--mute);font-size:15px}
+.v-panel .v-count{margin-top:26px;color:var(--fg)}
+.v-panel .v-link{display:inline-block;margin-top:18px;color:var(--fg);text-decoration:none;border-bottom:1px solid var(--crimson);font:500 12px/1.6 var(--mono);letter-spacing:.08em;text-transform:uppercase}
+.v-btn{position:absolute;z-index:2;background:rgba(23,20,31,.85);border:1px solid var(--line);width:48px;height:48px;display:flex;align-items:center;justify-content:center;font:400 26px/1 var(--body);color:var(--fg)}
+.v-btn:hover{background:var(--crimson);border-color:var(--crimson)}
+.v-close{top:max(14px,env(safe-area-inset-top,0px));right:max(14px,env(safe-area-inset-right,0px))}
+.v-prev{left:8px;top:50%;margin-top:-24px}
+.v-next{right:8px;top:50%;margin-top:-24px}
+@keyframes fade{from{opacity:0}}
+
+/* responsive */
+@media (max-width:980px){
+  .hero{grid-template-columns:minmax(0,1fr);gap:36px;padding-block:36px 56px}
+  .feat,.feat:nth-child(even){grid-template-columns:minmax(0,1fr);gap:24px}
+  .feat:nth-child(even) .feat-img{order:0}
+  .about{grid-template-columns:minmax(0,1fr);gap:32px}
+  .games{grid-template-columns:minmax(0,1fr)}
+  .nav{display:none}
+  .viewer{grid-template-columns:minmax(0,1fr);grid-template-rows:minmax(0,1fr) auto;overflow:auto}
+  .v-stage{grid-column:1;padding:64px 16px 12px}
+  .v-panel{grid-column:1;padding:8px max(16px,env(safe-area-inset-left,0px)) calc(28px + env(safe-area-inset-bottom,0px))}
+  .v-prev,.v-next{top:38%}
+  .sec{padding-block:52px}
+  .sec-alt{padding-block:84px}
+}
+@media (max-width:560px){
+  .fact{grid-template-columns:minmax(0,1fr);gap:4px}
+  .chip{padding:11px 18px}
+  .tile{clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,0 100%)}
+  .cap{padding:28px 10px 12px}
+  .cap b{font-size:18px}
+  .cap i{font-size:10px}
+  .btn{padding:15px 22px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Yska">YSKA<i>/</i></a>
+    <nav class="nav" aria-label="Principal">
+      <a href="#obra" data-i18n="navWork">Obra</a>
+      <a href="#produccion" data-i18n="navProd">Producción</a>
+      <a href="#sobre-mi" data-i18n="navAbout">Sobre mí</a>
+      <a href="#juegos" data-i18n="navGames">Juegos</a>
+      <a href="#contacto" data-i18n="navContact">Contacto</a>
+    </nav>
+    <div class="lang" role="group" aria-label="Idioma / Language">
+      <button type="button" id="lang-es" data-lang="es" aria-pressed="true">ES</button>
+      <button type="button" id="lang-en" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero wrap">
+    <div class="hero-copy">
+      <p class="eyebrow mono" data-i18n="eyebrow">Portfolio 2026</p>
+      <h1 class="name">YSKA</h1>
+      <p class="role" data-i18n="role">Artista digital · Character design · Game dev</p>
+      <div class="cta">
+        <a class="btn btn-primary" href="#obra" data-i18n="ctaWork">Ver obra</a>
+        <a class="btn btn-ghost" href="https://www.artstation.com/yska_art" target="_blank" rel="noopener">ArtStation ↗</a>
+      </div>
+      <ul class="toolrow mono"><li>Photoshop</li><li>Unity</li><li>C#</li></ul>
+    </div>
+    <div class="hero-art" id="heroArt"></div>
+  </section>
+
+  <section class="sec wrap" id="obra">
+    <div class="head">
+      <h2 class="h2" data-i18n="workTitle">Obra</h2>
+      <span class="count mono" id="count"></span>
+    </div>
+    <p class="sub" data-i18n="workSub"></p>
+    <div class="chips" id="chips" role="group" aria-label="Filtro"></div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <div class="sec-alt" id="produccion">
+    <div class="wrap">
+      <div class="head"><h2 class="h2" data-i18n="prodTitle">De la hoja al motor</h2></div>
+      <p class="sub" data-i18n="prodLead"></p>
+      <div class="feats" id="feats"></div>
+    </div>
+  </div>
+
+  <section class="sec wrap" id="sobre-mi">
+    <div class="head"><h2 class="h2" data-i18n="aboutTitle">Sobre mí</h2></div>
+    <div class="about">
+      <div><p data-i18n="about1"></p><p data-i18n="about2"></p></div>
+      <dl class="facts">
+        <div class="fact"><dt class="mono" data-i18n="kFocus"></dt><dd data-i18n="vFocus"></dd></div>
+        <div class="fact"><dt class="mono" data-i18n="kTools"></dt><dd data-i18n="vTools"></dd></div>
+        <div class="fact"><dt class="mono" data-i18n="kStudy"></dt><dd data-i18n="vStudy"></dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="sec wrap" id="juegos">
+    <div class="head"><h2 class="h2" data-i18n="gamesTitle">Game dev</h2></div>
+    <p class="sub" data-i18n="gamesLead"></p>
+    <div class="games" id="games"></div>
+  </section>
+
+  <section class="contact wrap" id="contacto">
+    <h2 class="h2" data-i18n="contactTitle">Hablemos</h2>
+    <div class="cta">
+      <a class="btn btn-primary" href="https://www.artstation.com/yska_art" target="_blank" rel="noopener">ArtStation ↗</a>
+      <a class="btn btn-ghost" href="https://github.com/YskaArt" target="_blank" rel="noopener">GitHub ↗</a>
+    </div>
+    <p class="mail mono"><a id="mailLink" href="mailto:yska.art@gmail.com">yska.art@gmail.com</a><button type="button" id="mailCopy" class="copy" data-i18n="copy">Copiar</button></p>
+    <div class="foot mono"><span>© 2026 Yska</span><span data-i18n="footer"></span></div>
+  </section>
+</main>
+
+<div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-labelledby="v-title" hidden>
+  <button type="button" class="v-btn v-close" id="vClose" data-i18n-aria="close">×</button>
+  <button type="button" class="v-btn v-prev" id="vPrev" data-i18n-aria="prev">‹</button>
+  <figure class="v-stage"><img id="vImg" alt="" width="1000" height="1000"></figure>
+  <aside class="v-panel">
+    <p class="mono" id="vMeta"></p>
+    <h3 id="v-title"></h3>
+    <div class="v-bar"></div>
+    <p id="vDesc"></p>
+    <p class="v-count mono" id="vCount"></p>
+    <a class="v-link" href="https://www.artstation.com/yska_art" target="_blank" rel="noopener" data-i18n="more">Más en ArtStation</a>
+  </aside>
+  <button type="button" class="v-btn v-next" id="vNext" data-i18n-aria="next">›</button>
+</div>
+
+<script>
+const DATA = {"pieces": [{"slug": "outer-wilds", "title": "Outer Wilds Spooky", "cat": "fan", "tag": "Outer Wilds", "year": "2026", "acc": "#2fd6a5", "w": 1156, "h": 1200, "tw": 790, "th": 820, "es": "Guardián con cornamenta y rostro de búho que sostiene una linterna en forma de estrella. Una sola luz verde ordena toda la composición.", "en": "Antlered, owl-faced guardian holding a star-shaped lantern. A single green glow organizes the whole composition."}, {"slug": "nice-nature", "title": "Nice Nature Domain Expansion", "cat": "fan", "tag": "Umamusume", "year": "2026", "acc": "#e0314b", "w": 1048, "h": 1200, "tw": 716, "th": 820, "es": "Retrato frontal con las manos en primer plano y líneas rojas que irradian desde el centro, sobre un fondo casi negro.", "en": "Front-facing portrait with hands in the foreground and red lines radiating from the center over a near-black ground."}, {"slug": "warrior", "title": "Warrior", "cat": "illus", "tag": "Ilustración", "year": "2026", "acc": "#d6403a", "w": 1297, "h": 1350, "tw": 788, "th": 820, "es": "Guerrera de espaldas contra una luna roja. Trazo de tinta seca, grises fríos y un único acento rojo en la mirada.", "en": "Warrior seen from behind against a red moon. Dry-ink brushwork, cool greys and a single red accent in the eye."}, {"slug": "magic-fighter", "title": "Magic Fighter Concept", "cat": "char", "tag": "Character design", "year": "2026", "acc": "#ff8a1f", "w": 1693, "h": 1200, "tw": 820, "th": 581, "es": "Hoja de concepto de una luchadora de fuego: diseño principal y poses de ataque (Descending, Aerial, Charge Flame y Basic Combo).", "en": "Concept sheet for a fire fighter: main design plus attack poses (Descending, Aerial, Charge Flame and Basic Combo)."}, {"slug": "loneliness", "title": "Loneliness", "cat": "illus", "tag": "Ilustración", "year": "2026", "acc": "#e0484b", "w": 1318, "h": 1501, "tw": 720, "th": 820, "es": "Figura con máscara roja de zorro hundida en la nieve, con un bosque desvaído en grises azulados.", "en": "Figure in a red fox mask sunk in the snow, with a faded forest in blue-greys."}, {"slug": "wallpaper-change", "title": "Wallpaper Change", "cat": "illus", "tag": "Ilustración", "year": "", "acc": "#e83e8c", "w": 1080, "h": 1920, "tw": 461, "th": 820, "es": "Silueta con paraguas y un gato bajo una lluvia de estrellas fugaces, en violetas y magentas. Formato vertical para móvil.", "en": "Silhouette with an umbrella and a cat under a rain of shooting stars, in violets and magentas. Vertical format for phones."}, {"slug": "frieren", "title": "Frieren", "cat": "fan", "tag": "Frieren", "year": "2026", "acc": "#8f8fe0", "w": 1048, "h": 1200, "tw": 716, "th": 820, "es": "Elfa en un campo de flores blancas al atardecer, con luz rosada y pétalos en movimiento.", "en": "Elf in a field of white flowers at dusk, with pink light and drifting petals."}, {"slug": "beast-of-hatred", "title": "Beast of Hatred", "cat": "char", "tag": "Character design", "year": "2026", "acc": "#b3262e", "w": 1693, "h": 1200, "tw": 820, "th": 581, "es": "Diseño de criatura con tres poses de ataque y trazos de garra. El rojo se concentra solo en las extremidades.", "en": "Creature design with three attack poses and claw-slash marks. The red is concentrated only in the limbs."}, {"slug": "in-the-rain", "title": "In the Rain", "cat": "illus", "tag": "Ilustración", "year": "2026", "acc": "#c1272d", "w": 1920, "h": 1080, "tw": 820, "th": 461, "es": "Bufona bailando sobre un charco bajo la lluvia. Escena apaisada en grises con acentos rojos.", "en": "Jester dancing on a puddle in the rain. Widescreen scene in greys with red accents."}, {"slug": "tamamo-cross", "title": "Tamamo Cross", "cat": "fan", "tag": "Umamusume", "year": "2026", "acc": "#46b3ff", "w": 1297, "h": 1350, "tw": 788, "th": 820, "es": "Retrato de espaldas con anatomía marcada, recortado sobre relámpagos de neón azul.", "en": "Portrait from behind with defined anatomy, cut out against neon-blue lightning."}, {"slug": "concept-character", "title": "Concept Character", "cat": "char", "tag": "Character design", "year": "2026", "acc": "#3b82c4", "w": 1048, "h": 1200, "tw": 716, "th": 820, "es": "Personaje original con figura completa y dos estudios de expresión. Abrigo claro con cuello de piel sobre fondo azul.", "en": "Original character with a full-body view and two expression studies. Light coat with a fur collar on a blue ground."}, {"slug": "this-fire", "title": "This Fire", "cat": "illus", "tag": "Ilustración", "year": "2026", "acc": "#f2a93b", "w": 1318, "h": 1501, "tw": 720, "th": 820, "es": "Silueta encapuchada de ojos rojos contra un resplandor de fuego, pintada con pincel texturado.", "en": "Hooded silhouette with red eyes against a firelit glow, painted with a textured brush."}, {"slug": "aizo", "title": "AIZO", "cat": "illus", "tag": "Ilustración", "year": "2026", "acc": "#4a7fd1", "w": 1048, "h": 1200, "tw": 716, "th": 820, "es": "Retrato frontal detrás de un vidrio agrietado. Paleta fría de azules con ojos rojos como único contraste.", "en": "Front-facing portrait behind cracked glass. Cold blue palette with red eyes as the only contrast."}, {"slug": "clarividencia", "title": "Clarividencia", "cat": "illus", "tag": "Ilustración", "year": "2026", "acc": "#8b5cf6", "w": 1048, "h": 1200, "tw": 716, "th": 820, "es": "Figura de piel verdosa y una venda con ojo violeta, junto a un búho, flotando entre pinos oscuros.", "en": "Green-skinned figure with a blindfold over a violet eye, alongside an owl, floating between dark pines."}, {"slug": "abyss", "title": "Abyss", "cat": "illus", "tag": "Ilustración", "year": "2026", "acc": "#d7263d", "w": 1297, "h": 1350, "tw": 788, "th": 820, "es": "Escena en blanco y negro con tentáculos flotando alrededor de una figura de mirada roja.", "en": "Black-and-white scene with tentacles floating around a red-eyed figure."}, {"slug": "cyber-monitoys", "title": "Cyber Monitoys Concept", "cat": "char", "tag": "Character design", "year": "", "acc": "#e5533d", "w": 1434, "h": 1606, "tw": 732, "th": 820, "es": "Mono de combate en hoja de producción: línea en gris de perfil y frente, versión en color y variantes de Player 1 y Player 2.", "en": "Fighting monkey as a production sheet: grey line art in profile and front, color version, and Player 1 and Player 2 variants."}, {"slug": "fade", "title": "Fade", "cat": "fan", "tag": "Valorant", "year": "2025", "acc": "#e0314b", "w": 1124, "h": 1481, "tw": 622, "th": 820, "es": "Personaje junto a una criatura de sombras con sonrisa roja, entre violetas y negros.", "en": "Character beside a shadow creature with a red grin, in violets and blacks."}, {"slug": "character-study", "title": "Character Study", "cat": "char", "tag": "Character design", "year": "2026", "acc": "#3fa89b", "w": 1048, "h": 1074, "tw": 800, "th": 820, "es": "Estudio de personaje con figura de cuerpo entero y dos variaciones de expresión y peinado.", "en": "Character study with a full-body view and two variations of expression and hairstyle."}], "text": {"es": {"eyebrow": "Portfolio 2026", "role": "Artista digital · Character design · GameDev", "lede": "Personajes, criaturas y mundos oscuros. Dibujo la hoja de concept y también llevo el sprite hasta el motor.", "ctaWork": "Ver obra", "navWork": "Obra", "navProd": "Producción", "navAbout": "Sobre mí", "navGames": "Juegos", "navContact": "Contacto", "workTitle": "Obra", "workSub": "Ilustración, hojas de personaje y fan art de 2025 y 2026. Toca una pieza para verla en grande.", "all": "Todo", "pieces": "piezas", "prodTitle": "De la hoja al motor", "prodLead": "Además de ilustrar, preparo los personajes para producción: poses de acción, variantes de color y piezas separadas para animar. Los sprites finales los dibujo al doble de resolución y los reduzco con Bicubic Sharper antes de llevarlos a Unity.", "viewSheet": "Ver hoja completa", "aboutTitle": "Sobre mí", "about1": "Soy artista digital y desarrollador independiente de videojuegos. Vengo del Diseño y la Animación 2D/3D y estoy en el último tramo de la Licenciatura en Producción de Simuladores y Videojuegos.", "about2": "Dibujo personajes, criaturas y escenas de fantasía oscura, y programo en Unity con C# para llevarlos al juego.", "kFocus": "Foco", "vFocus": "Character design, ilustración, sprites 2D", "kTools": "Herramientas", "vTools": "Photoshop (tableta XP-Pen Artist 12 Pro), Unity, C#, Git", "kStudy": "Formación", "vStudy": "Lic. en Producción de Simuladores y Videojuegos (en curso)", "gamesTitle": "Game dev", "gamesLead": "Proyectos en los que dibujo y también programo.", "contactTitle": "Contacto", "contactText": "Para encargos, colaboraciones o puestos de arte, escríbeme por ArtStation.", "footer": "Todas las imágenes son obra de Yska.", "copy": "Copiar", "close": "Cerrar", "prev": "Anterior", "next": "Siguiente", "more": "Más en ArtStation", "fanNote": "Fan art"}, "en": {"eyebrow": "Portfolio 2026", "role": "Digital artist · Character design · GameDev", "lede": "Characters, creatures and dark worlds. I draw the concept sheet and carry the sprite all the way into the engine.", "ctaWork": "View work", "navWork": "Work", "navProd": "Production", "navAbout": "About", "navGames": "Games", "navContact": "Contact", "workTitle": "Work", "workSub": "Illustration, character sheets and fan art from 2025 and 2026. Tap a piece to see it larger.", "all": "All", "pieces": "pieces", "prodTitle": "From sheet to engine", "prodLead": "Besides illustrating, I prepare characters for production: action poses, color variants and separate pieces to animate. I draw final sprites at double resolution and downscale them with Bicubic Sharper before bringing them into Unity.", "viewSheet": "View full sheet", "aboutTitle": "About", "about1": "I am a digital artist and independent game developer. I come from 2D/3D Design and Animation and I am in the last stretch of a degree in Simulator and Video Game Production.", "about2": "I draw characters, creatures and dark fantasy scenes, and I code in Unity with C# to bring them into the game.", "kFocus": "Focus", "vFocus": "Character design, illustration, 2D sprites", "kTools": "Tools", "vTools": "Photoshop (XP-Pen Artist 12 Pro tablet), Unity, C#, Git", "kStudy": "Studies", "vStudy": "BA in Simulator and Video Game Production (in progress)", "gamesTitle": "Game dev", "gamesLead": "Projects where I both draw and code.", "contactTitle": "Contact", "contactText": "For commissions, collaborations or art roles, message me on ArtStation.", "footer": "All images are artwork by Yska.", "copy": "Copy", "close": "Close", "prev": "Previous", "next": "Next", "more": "More on ArtStation", "fanNote": "Fan art"}}, "cats": {"char": {"es": "Character design", "en": "Character design"}, "illus": {"es": "Ilustración", "en": "Illustration"}, "fan": {"es": "Fan art", "en": "Fan art"}}, "feats": [{"slug": "magic-fighter", "es": {"h": "Poses de acción listas para animar", "b": ["Pose principal más cuatro acciones: Descending Attack, Aerial Attack, Charge Flame y Basic Combo.", "Puños y llamas se dibujan como elementos separados del cuerpo, así pueden animarse por capas."]}, "en": {"h": "Action poses ready to animate", "b": ["Main pose plus four actions: Descending Attack, Aerial Attack, Charge Flame and Basic Combo.", "Fists and flames are drawn as elements separate from the body, so they can be animated in layers."]}}, {"slug": "cyber-monitoys", "es": {"h": "Variantes de jugador con un cambio mínimo", "b": ["Línea en gris de perfil y frente antes del color.", "Player 2 cambia solo el color de ojos, faja y vendas; la silueta se mantiene.", "Orejas grandes y collar metálico como rasgos fáciles de reconocer."]}, "en": {"h": "Player variants with minimal changes", "b": ["Grey line art in profile and front before color.", "Player 2 changes only eye, sash and wrap colors; the silhouette stays the same.", "Big ears and a metal collar as easy-to-read traits."]}}, {"slug": "beast-of-hatred", "es": {"h": "Criatura con lectura clara en movimiento", "b": ["Pose de reposo en grises con el rojo concentrado en garras y antebrazos.", "Tres poses de ataque con trazos de corte que marcan la dirección del golpe.", "Silueta definida por la columna de espinas y la cola larga."]}, "en": {"h": "A creature that reads clearly in motion", "b": ["Resting pose in greys with the red concentrated in claws and forearms.", "Three attack poses with slash marks that show the direction of the hit.", "Silhouette defined by the spiked spine and long tail."]}}], "games": [{"name": "K.I.C.K.", "tags": ["Unity", "C#", "3D", "Game jam", "WebGL"], "es": "Arcade 3D para móvil, hecho en una game jam de Diseño y Animación 3D II. Fases de malabares y disparos, control por swipe y física de curva de la pelota. Portado a WebGL para itch.io.", "en": "3D mobile arcade game made for a 3D Design and Animation II game jam. Juggling and shooting phases, swipe controls and ball curve physics. Ported to WebGL for itch.io."}, {"name": "Cowboy Idle Frontier", "tags": ["Unity", "C#", "Android", "Idle / Runner"], "es": "Juego idle/runner para móvil con temática de vaqueros, desarrollado en equipo. Sistemas de progresión, tienda, ganancias offline y misiones diarias y por zona.", "en": "Cowboy-themed idle/runner mobile game, built as a team. Progression, shop, offline earnings, and daily and per-zone missions."}], "mail": "yska.art@gmail.com"};
+const PIECES = DATA.pieces, T = DATA.text, CATS = DATA.cats, FEATS = DATA.feats, GAMES = DATA.games;
+const $ = (s, r=document) => r.querySelector(s);
+let lang = 'es', filter = 'all', current = null, lastFocus = null, list = [];
+
+try { const s = localStorage.getItem('yska-lang'); if (s==='es'||s==='en') lang = s; else if ((navigator.language||'').toLowerCase().startsWith('en')) lang = 'en'; } catch(e){}
+
+const bySlug = Object.fromEntries(PIECES.map(p => [p.slug, p]));
+const t = k => T[lang][k] ?? k;
+const catLabel = p => p.cat === 'fan' ? 'Fan art · ' + p.tag : CATS[p.cat][lang];
+const metaLine = p => [catLabel(p), p.year].filter(Boolean).join(' · ');
+
+/* tiles */
+function makeTile(p, withCap = true, full = false){
+  const b = document.createElement('button');
+  b.type = 'button'; b.className = 'tile'; b.dataset.slug = p.slug;
+  b.style.setProperty('--acc', p.acc);
+  const src = full ? 'img/' + p.slug + '.jpg' : 'thumb/' + p.slug + '.jpg';
+  b.innerHTML = '<img loading="lazy" decoding="async" src="' + src + '" width="' + p.tw + '" height="' + p.th + '" alt="">' +
+    (withCap ? '<span class="cap"><b></b><i></i></span>' : '');
+  b.addEventListener('click', () => openViewer(p.slug, b));
+  return b;
+}
+const tiles = PIECES.map(p => makeTile(p));
+function labelTiles(){
+  tiles.forEach((el, i) => {
+    const p = PIECES[i];
+    $('b', el).textContent = p.title;
+    $('i', el).textContent = metaLine(p);
+    $('img', el).alt = p.title + '. ' + p[lang];
+  });
+}
+
+/* masonry, left-to-right reading order */
+const grid = $('#grid');
+let lastN = 0;
+function layout(force){
+  const w = grid.clientWidth || 1000;
+  const n = w >= 900 ? 3 : 2, gap = w < 560 ? 10 : 16;
+  if (!force && n === lastN && grid.dataset.f === filter) return;
+  lastN = n; grid.dataset.f = filter;
+  grid.style.setProperty('--n', n); grid.style.setProperty('--gap', gap + 'px');
+  grid.replaceChildren();
+  const cols = Array.from({length:n}, () => { const el = document.createElement('div'); el.className = 'col'; grid.appendChild(el); return {el, h:0}; });
+  const cw = (w - gap * (n-1)) / n;
+  list = PIECES.filter(p => filter === 'all' || p.cat === filter);
+  list.forEach(p => {
+    const el = tiles[PIECES.indexOf(p)];
+    const c = cols.reduce((a, b) => b.h < a.h ? b : a);
+    c.el.appendChild(el); c.h += cw * p.th / p.tw + gap;
+  });
+}
+
+/* chips */
+function renderChips(){
+  const box = $('#chips'); box.replaceChildren();
+  const defs = [['all', t('all')], ['char', CATS.char[lang]], ['illus', CATS.illus[lang]], ['fan', CATS.fan[lang]]];
+  defs.forEach(([k, label]) => {
+    const n = k === 'all' ? PIECES.length : PIECES.filter(p => p.cat === k).length;
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'chip'; b.setAttribute('aria-pressed', String(filter === k));
+    b.innerHTML = label + '<b>' + n + '</b>';
+    b.addEventListener('click', () => { filter = k; try { localStorage.setItem('yska-filter', k); } catch(e){} renderChips(); layout(true); updateCount(); });
+    box.appendChild(b);
+  });
+}
+function updateCount(){ $('#count').textContent = list.length + ' ' + t('pieces'); }
+
+/* hero */
+function renderHero(){
+  const box = $('#heroArt'); box.replaceChildren();
+  [['warrior','55% 30%'], ['outer-wilds','50% 35%'], ['nice-nature','50% 28%']].forEach(([s, pos]) => {
+    const p = bySlug[s];
+    const b = document.createElement('button');
+    b.type = 'button'; b.className = 'slab'; b.style.setProperty('--acc', p.acc);
+    b.setAttribute('aria-label', p.title);
+    b.innerHTML = '<img src="thumb/' + s + '.jpg" alt="" style="object-position:' + pos + '" width="' + p.tw + '" height="' + p.th + '">';
+    b.addEventListener('click', () => openViewer(s, b));
+    box.appendChild(b);
+  });
+}
+
+/* production */
+function renderFeats(){
+  const box = $('#feats'); box.replaceChildren();
+  FEATS.forEach(f => {
+    const p = bySlug[f.slug], c = f[lang];
+    const row = document.createElement('div'); row.className = 'feat';
+    const fig = document.createElement('div'); fig.className = 'feat-img';
+    fig.style.setProperty('--acc', p.acc);
+    const tile = makeTile(p, true, false);
+    $('b', tile).textContent = p.title; $('i', tile).textContent = metaLine(p);
+    $('img', tile).alt = p.title + '. ' + p[lang];
+    fig.appendChild(tile);
+    const txt = document.createElement('div'); txt.className = 'feat-txt';
+    txt.innerHTML = '<p class="mono"></p><h3></h3><ul></ul>';
+    $('.mono', txt).textContent = p.title;
+    $('h3', txt).textContent = c.h;
+    c.b.forEach(x => { const li = document.createElement('li'); li.textContent = x; $('ul', txt).appendChild(li); });
+    const btn = document.createElement('button'); btn.type = 'button'; btn.className = 'btn btn-ghost'; btn.textContent = t('viewSheet');
+    btn.addEventListener('click', () => openViewer(p.slug, btn));
+    txt.appendChild(btn);
+    row.append(fig, txt); box.appendChild(row);
+  });
+}
+
+/* games */
+function renderGames(){
+  const box = $('#games'); box.replaceChildren();
+  GAMES.forEach(g => {
+    const a = document.createElement('article'); a.className = 'game';
+    a.innerHTML = '<h3></h3><p></p><ul class="tags"></ul>';
+    $('h3', a).textContent = g.name; $('p', a).textContent = g[lang];
+    g.tags.forEach(x => { const li = document.createElement('li'); li.textContent = x; $('.tags', a).appendChild(li); });
+    box.appendChild(a);
+  });
+}
+
+/* i18n */
+function applyLang(){
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-i18n]').forEach(el => { el.textContent = t(el.dataset.i18n); });
+  document.querySelectorAll('[data-i18n-aria]').forEach(el => { el.setAttribute('aria-label', t(el.dataset.i18nAria)); });
+  document.querySelectorAll('.lang button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+  labelTiles(); renderChips(); renderFeats(); renderGames(); renderHero(); layout(true); updateCount();
+  if (current) fillViewer();
+}
+document.querySelectorAll('.lang button').forEach(b => b.addEventListener('click', () => {
+  lang = b.dataset.lang; try { localStorage.setItem('yska-lang', lang); } catch(e){}
+  applyLang();
+}));
+
+/* viewer */
+const viewer = $('#viewer'), vImg = $('#vImg');
+function pool(){ return list.some(p => p.slug === current) ? list : PIECES; }
+function fillViewer(){
+  const p = bySlug[current], pl = pool();
+  vImg.src = 'img/' + p.slug + '.jpg'; vImg.alt = p.title + '. ' + p[lang];
+  vImg.width = p.w; vImg.height = p.h;
+  viewer.style.setProperty('--acc', p.acc);
+  $('#vMeta').textContent = metaLine(p);
+  $('#v-title').textContent = p.title;
+  $('#vDesc').textContent = p[lang];
+  const i = pl.findIndex(x => x.slug === current);
+  $('#vCount').textContent = String(i + 1).padStart(2, '0') + ' / ' + String(pl.length).padStart(2, '0');
+  [-1, 1].forEach(d => { const n = pl[(i + d + pl.length) % pl.length]; new Image().src = 'img/' + n.slug + '.jpg'; });
+}
+function setHash(h){ try { history.replaceState(null, '', h ? '#' + h : location.pathname + location.search); } catch(e){} }
+function openViewer(slug, from){
+  if (!current) lastFocus = from || document.activeElement;
+  current = slug; fillViewer(); viewer.hidden = false;
+  document.documentElement.style.overflow = 'hidden';
+  $('#vClose').focus({preventScroll:true}); setHash('p-' + slug);
+}
+function closeViewer(){
+  if (!current) return;
+  current = null; viewer.hidden = true; document.documentElement.style.overflow = '';
+  setHash(''); if (lastFocus && lastFocus.focus) lastFocus.focus({preventScroll:true});
+}
+function step(d){
+  const pl = pool(), i = pl.findIndex(x => x.slug === current);
+  current = pl[(i + d + pl.length) % pl.length].slug; fillViewer(); setHash('p-' + current);
+}
+$('#vClose').addEventListener('click', closeViewer);
+$('#vPrev').addEventListener('click', () => step(-1));
+$('#vNext').addEventListener('click', () => step(1));
+viewer.addEventListener('click', e => { if (e.target === viewer || e.target.classList.contains('v-stage')) closeViewer(); });
+document.addEventListener('keydown', e => {
+  if (!current) return;
+  if (e.key === 'Escape') closeViewer();
+  else if (e.key === 'ArrowLeft') step(-1);
+  else if (e.key === 'ArrowRight') step(1);
+  else if (e.key === 'Tab') {
+    const f = [...viewer.querySelectorAll('button, a[href]')].filter(x => x.offsetParent !== null);
+    const first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  }
+});
+let tx = null;
+viewer.addEventListener('touchstart', e => { tx = e.touches[0].clientX; }, {passive:true});
+viewer.addEventListener('touchend', e => { if (tx === null) return; const dx = e.changedTouches[0].clientX - tx; tx = null; if (Math.abs(dx) > 60) step(dx < 0 ? 1 : -1); }, {passive:true});
+
+$('#mailCopy').addEventListener('click', async e => {
+  const b = e.currentTarget, old = b.textContent;
+  try { await navigator.clipboard.writeText(DATA.mail); b.textContent = '✓'; } catch(err) {
+    const r = document.createRange(); r.selectNodeContents($('#mailLink')); const s = getSelection(); s.removeAllRanges(); s.addRange(r); b.textContent = '↑';
+  }
+  setTimeout(() => { b.textContent = t('copy'); }, 1400);
+});
+
+/* start */
+try { const f = localStorage.getItem('yska-filter'); if (['all','char','illus','fan'].includes(f)) filter = f; } catch(e){}
+applyLang();
+let rz; window.addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => layout(false), 120); });
+const m = /^#p-([a-z0-9-]+)$/.exec(location.hash);
+if (m && bySlug[m[1]]) openViewer(m[1], null);
+</script>
+
+</body>
+</html>
